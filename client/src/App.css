@@ -1,0 +1,50 @@
+a {
+  color: black !important;
+}
+
+.mycard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px;
+}
+
+.auth-card {
+  padding: 20px;
+  text-align: center;
+  max-width: 400px;
+}
+
+.input-field input[type="text"]:focus {
+  border-bottom: 1px solid rgb(42, 104, 175) !important;
+  box-shadow: 0 1px 0 0 rgb(27, 104, 192) !important;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.item {
+  width: 30%;
+}
+
+.home-card{
+  max-width: 500px;
+  height: max-content;
+  margin: 26px auto;
+}
+
+/* #toast-container {
+ top: 30px !important;
+ right: 200px !important;
+ left: auto !important;
+} */
+
+.material-icons:hover {
+  cursor: pointer;
+}
+
+.collection-item {
+  width: 100%;
+}

@@ -4,6 +4,7 @@ import { UserContext } from "../../App";
 const Profile = () => {
 	const [mypics, setPics] = useState([]);
 	const { state, dispatch } = useContext(UserContext);
+	console.log(state);
 	const [image, setImage] = useState("");
 	useEffect(() => {
 		fetch("/myposts", {
@@ -125,13 +126,6 @@ const Profile = () => {
 			})
 			.catch((err) => console.log(err));
 	};
-	// const handleFollowing = () => {
-	// 	console.log(state._id);
-	// 	// fetch(`/following/${id}`)
-	// 	// 	.then((res) => res.json())
-	// 	// 	.then((result) => console.log(result))
-	// 	// 	.catch((err) => console.log(er));
-	// };
 	return (
 		<div style={{ maxWidth: "50%", margin: "0px auto" }}>
 			<div
@@ -173,8 +167,30 @@ const Profile = () => {
 							}}
 						>
 							<h6>{mypics.length} posts</h6>
-							<h6>{state ? state.followers.length  : "0 "} followers</h6>
-							<h6>{state ? state.following.length  : "0 "} following</h6>
+							{state && (
+								<>
+									{state.followers.length ? (
+										<Link to={`/Followers/${state._id}`}>
+											<h6>{state.followers.length} followers</h6>
+										</Link>
+									) : (
+										<h6>0 followers</h6>
+									)}
+									{/* <Link to={`/Followers/${state._id}`}>
+										<h6>{state ? state.followers.length : "0 "} followers</h6>
+									</Link> */}
+									{state.following.length ? (
+										<Link to={`Following/${state._id}`}>
+											<h6>{state.following.length} following</h6>
+										</Link>
+									) : (
+										<h6>0 following</h6>
+									)}
+									{/* <Link to={`Following/${state._id}`}>
+										<h6>{state ? state.following.length : "0 "} following</h6>
+									</Link> */}
+								</>
+							)}
 						</div>
 					</div>
 				</div>

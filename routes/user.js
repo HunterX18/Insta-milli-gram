@@ -22,7 +22,7 @@ router.get("/user/:id", requireLogin, (req, res) => {
 		.catch((err) => res.status(404).json({ error: "User not found" }));
 });
 
-router.put("/follow", requireLogin, (req, res) => {
+router.put("/follow", requireLogin, async (req, res) => {
 	User.findByIdAndUpdate(
 		req.body.followid,
 		{
@@ -123,7 +123,6 @@ router.put("/EditProfile", requireLogin, (req, res) => {
 });
 
 router.delete("/deleteprofile/:profileId", requireLogin, (req, res) => {
-
 	User.findOne({ _id: req.params.profileId }).exec((err, user) => {
 		if (err || !user) {
 			return res.status(422).json({ error: err });
@@ -151,5 +150,95 @@ router.post("/search-users", (req, res) => {
 		.catch((err) => console.log(err));
 });
 
+router.get("/getFollowers/:id", async (req, res) => {
+	let followers = await User.findById(req.params.id);
+	followers = followers.followers;
+	if (followers.length == 0) return res.json([]);
+	const result = await Promise.all(
+		followers.map(async (follower) => {
+			return await User.findById(follower);
+		})
+	);
+	res.json(result);
+});
+
+router.put("/removeFollower/:id", async (req, res) => {
+	const removeId = req.body.removeId;
+	const userId = req.params.id;
+	console.log(userId, removeId);
+
+	User.findByIdAndUpdate(
+		userId,
+		{
+			$pull: { followers: removeId },
+		},
+		{
+			new: true,
+		},
+		(err, userResult) => {
+			if (err) return res.status(422).json({ error: err });
+			User.findByIdAndUpdate(
+				removeId,
+				{
+					$pull: { following: userId },
+				},
+				{
+					new: true,
+				}
+			)
+				.select("-password")
+				.then((removeResult) => res.json(removeId))
+				.catch((err) => res.status(422).json(err));
+		}
+	);
+});
+
+router.get("/getFollowing/:id", async (req, res) => {
+	let followings = await User.findById(req.params.id);
+	followings = followings.following;
+	if (followings.length == 0) return res.json([]);
+
+	// console.log(followings);
+
+	const result = await Promise.all(
+		followings.map(async (following) => {
+			return await User.findById(following);
+		})
+	);
+	res.json(result);
+});
+
+router.put("/removeFollowing/:id", (req, res) => {
+	const userId = req.params.id;
+	const removeId = req.body.removeId;
+	// return res.json({ mssg: "success", userId, removeId });
+	User.findByIdAndUpdate(
+		userId,
+		{
+			$pull: { following: removeId },
+		},
+		{
+			new: true,
+		},
+		(err, userResult) => {
+			if (err) res.status(422).json({ error: err });
+			User.findByIdAndUpdate(
+				removeId,
+				{
+					$pull: { followers: userId },
+				},
+				{
+					new: true,
+				}
+			)
+				.select("-password")
+				.then((removeResult) => {
+					// console.log(removeResult);
+					res.json(removeId);
+				})
+				.catch((err) => res.status(422).json(err));
+		}
+	);
+});
 
 module.exports = router;

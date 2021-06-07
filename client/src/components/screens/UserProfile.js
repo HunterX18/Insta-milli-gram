@@ -9,6 +9,9 @@ const Profile = () => {
 	const [showFollow, setShowFollow] = useState(
 		state ? !state.following.includes(userid) : true
 	);
+
+	console.log(state);
+
 	useEffect(() => {
 		fetch(`/user/${userid}`, {
 			headers: {
@@ -49,8 +52,7 @@ const Profile = () => {
 			.then((res) => res.json())
 			.then((result) => {
 				const newData = data.map((item) => {
-					if (item._id == result._id)
-						return result;
+					if (item._id == result._id) return result;
 					else return item;
 				});
 				setData(newData);
@@ -71,8 +73,7 @@ const Profile = () => {
 			.then((res) => res.json())
 			.then((result) => {
 				const newData = data.map((item) => {
-					if (item._id == result._id)
-						return result;
+					if (item._id == result._id) return result;
 					else return item;
 				});
 				setData(newData);
@@ -95,8 +96,7 @@ const Profile = () => {
 			.then((res) => res.json())
 			.then((result) => {
 				const newData = data.map((item) => {
-					if (item._id == result._id)
-						return result;
+					if (item._id == result._id) return result;
 					else return item;
 				});
 				setData(newData);
@@ -131,8 +131,7 @@ const Profile = () => {
 			.then((res) => res.json())
 			.then((result) => {
 				const newData = data.map((item) => {
-					if (item._id == result._id)
-						return result;
+					if (item._id == result._id) return result;
 					else return item;
 				});
 				setData(newData);
@@ -153,7 +152,7 @@ const Profile = () => {
 		})
 			.then((res) => res.json())
 			.then((userProfile) => {
-				// console.log(userProfile);
+				// console.log(userProfile); b
 				dispatch({
 					type: "UPDATE",
 					payload: {
@@ -277,7 +276,7 @@ const Profile = () => {
 										src={item.postedBy.pic}
 										style={{
 											width: "40px",
-											height:"40px",
+											height: "40px",
 											borderRadius: "50%",
 											float: "left",
 											margin: "5px",

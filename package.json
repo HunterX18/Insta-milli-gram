@@ -1,18 +1,24 @@
 {
-  "name": "insta-clone",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.11",
-    "nodemon": "^2.0.7"
-  }
+	"name": "insta-clone",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"server": "nodemon app.js",
+		"build": "cd client && npm run build",
+        "install-client": "cd client && npm install",
+        "heroku-postbuild": "npm run install-client && npm run build",
+        "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
+        "start": "nodemon app.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.11.11",
+		"nodemon": "^2.0.7"
+	}
 }
